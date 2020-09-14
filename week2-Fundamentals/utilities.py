@@ -61,8 +61,8 @@ def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_deg
     ax2 = ax1.twinx()
     
     # Home made tricks for great legend
-    ax1.plot([-20] * len(optimal_train),  label='Training', color='k', linewidth=1)
-    ax1.plot([-20] * len(optimal_train), label='Test', linestyle='dashed', color='k', linewidth=1)
+    ax1.plot([-20] * len(optimal_train),  label='Test', color='k', linewidth=1)
+    ax1.plot([-20] * len(optimal_train), label='Training', linestyle='dashed', color='k', linewidth=1)
     ax1.plot([-20] * len(optimal_train), label='     ', linestyle='dashed', color='white')
 
     ax1.plot(H_train[:,2], color=cmap(1), linestyle='dashed', linewidth=linewidth)   # Since we are interested in the cubic curve
