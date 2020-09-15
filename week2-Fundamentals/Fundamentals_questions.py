@@ -77,24 +77,24 @@ plt = scatter_plot(x_train, x_test, y_train, y_test)   # The scatter_plot functi
 
 # ### 2.1.2 Getting - visual - intuition about models' capacity
 # 
-# As seen in class, the higher the model capacity, the better it will fit the training data set (caution though, fitting well the training data does not necesarily lead to good generalization). Here, we use [polynomial regression](https://en.wikipedia.org/wiki/Polynomial_regression) to fit the training set (don't worry, the purpose of the tutorial is not to understand polynomial regression). Note however that the greater is the polynomial degree, the higher is the model capacity. 
+# As seen in class (Slide 38 for example), the higher the model capacity, the better it will fit the training data set (caution though, fitting well the training data does not necesarily lead to good generalization). Here, we use [polynomial regression](https://en.wikipedia.org/wiki/Polynomial_regression) to fit the training set (don't worry, the purpose of the tutorial is not to understand polynomial regression). Note however that the greater is the polynomial degree, the higher is the model capacity. 
 # 
 # **Questions**: 
-# 1. Observe how the fitted curve behave with respect to their polynomial degre. 
-# 2. Would you prefer to fit the data points with polynomial regression of degre 25 or 100?
+# 1. Observe how the fitted curve behave with respect to their polynomial degree. 
+# 2. Would you prefer to fit the data points with polynomial regression of degree 25 or 100?
 # 3. Wich of these curves should have the best generalization error?
 
-# In[4]:
+# In[6]:
 
 
-degre = [0, 1, 3, 5, 10, 20, 150]   # Maximal polynomial degre of the fitted curve: higher degre == higher capacity
+degree = [0, 1, 3, 5, 10, 20, 150]   # Maximal polynomial degree of the fitted curve: higher degree == higher capacity
 
-plot_polynomial_curves(x_train, x_test, y_train, y_test, degre)
+plot_polynomial_curves(x_train, x_test, y_train, y_test, degree)
 
 
 # ### 2.1.3 Sample size and models' capacity
 # 
-# We study the behavior of the polynomial regressors and examine how they perform when the sample size increases. Specificaly, with study the behavior of the cubic polynomial regression and the optimal polynomial regression (which minimize the MSE on the test set). 
+# We study the behavior of the polynomial regressors and examine how they perform when the sample size increases (as presented on Slide 40 also Figure 5.4 of the Deep Learning book). Specificaly, with study the behavior of the cubic polynomial regression and the optimal polynomial regression (which minimize the MSE on the test set). 
 # 
 # **Question**: Do the following curves behave as expected?
 
@@ -104,9 +104,9 @@ plot_polynomial_curves(x_train, x_test, y_train, y_test, degre)
 sample_size = [10, 10**2, 10**3, 10**4, 10**5, 10**6]   # Sample size of the training set that we want to study
 variance = 20
 
-H_train, H_test, optimal_train, optimal_test, optimal_degre     = train_poly_and_see(sample_size, scale, period, variance, degre)
+H_train, H_test, optimal_train, optimal_test, optimal_degree     = train_poly_and_see(sample_size, scale, period, variance, degree)
 
-plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degre)
+plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree)
 
 
 # # 2.2 Bias and variance of estimators
@@ -163,7 +163,7 @@ scatter_plot(X_train[:, 1], X_test [:, 1], y_train, y_test)
 # ### 2.2.2 The OLS estimators
 # 
 # **Questions**: 
-# 1. Given the expression of the least squares estimators presented on slide 24 of the course, complete the OLS function below to obtain the least squares estimators. As a reminder, these estimators are defined as follows:
+# 1. Given the expression of the least squares estimators presented on Slide 31 of the course, complete the OLS function below to obtain the least squares estimators. As a reminder, these estimators are defined as follows:
 # 
 # $$ \hat{\bf{w}}^{\text{OLS}} := (\bf{X}^\top \bf{X})^{-1} \bf{X}^\top \bf{y}$$
 # 
@@ -319,11 +319,11 @@ print("Analytical variance of the w_1 estimate: ", (...))
 
 # ### 2.2.3 OLS estimators with L2-Regularization
 # 
-# As pointed out in slide 36, we can add a L$_2$ regularization on the weights of the linear model defined in Section 2.1. The associated estimators are known as the [Ridge or Tikhonov estimator](https://en.wikipedia.org/wiki/Tikhonov_regularization) and are defined as
+# As pointed out in Slide 45, we can add a L$_2$ regularization on the weights of the linear model defined in Section 2.1. The associated estimators are known as the [Ridge or Tikhonov estimator](https://en.wikipedia.org/wiki/Tikhonov_regularization) and are defined as
 # 
 # $$ \hat{w}^{\text{ridge}} := (\bf{X}^\top \bf{X} + \lambda \bf{I})^{-1} \bf{X}^\top \bf{y}$$
 # 
-# where $\lambda$ is a hyperparameter (see slides 37 and 38) wich control the model's capacity. 
+# where $\lambda$ is a hyperparameter (see Slides 45 and 46) wich control the model's capacity. 
 # 
 # **Question**: Given the above expression, complete the ridge function below to obtain the ridge estimators.
 
@@ -416,7 +416,7 @@ print("Bias of the w_1: ", bias[1])   # Bias of w_1
 
 # ## 2.3 Cross validation - Getting the optimal hyper parameter value
 # 
-# Cross validation can be used (among other techniques) in order to perform model and hyper parameters selection. The first step is to split the train set into a (smaller) train set and validation set as shown in Slide 38 of the course. In Python, we will mostly use the train_test_split function from the Scikitlearn library to perform data splitting.
+# Cross validation can be used (among other techniques) in order to perform model and hyper parameters selection. The first step is to split the train set into a (smaller) train set and validation set as shown on Slide 49 of the course. In Python, we will mostly use the train_test_split function from the Scikitlearn library to perform data splitting.
 
 # In[ ]:
 

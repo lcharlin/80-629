@@ -28,29 +28,32 @@ def scatter_plot(x_train, x_test, y_train, y_test):
     leg.get_frame().set_alpha(0)
     return plt
     
-def plot_polynomial_curves(x_train, x_test, y_train, y_test, degre):
+def plot_polynomial_curves(x_train, x_test, y_train, y_test, degree, scale):
 
     loss_train_stack, loss_test_stack = [], []
-    color=cm.rainbow(np.linspace(0,1,len(degre)))
+    color=cm.rainbow(np.linspace(0,1,len(degree)))
     plt = scatter_plot(x_train, x_test, y_train, y_test)
 
-    for k,c in zip(range(len(degre)),color):
-        coef = np.polyfit(x_train, y_train, degre[k])
+    for k,c in zip(range(len(degree)),color):
+        coef = np.polyfit(x_train, y_train, degree[k])
         
         y_hat_train = np.polyval(coef, x_train)
         y_hat_test = np.polyval(coef, x_test)
-        
+       
         loss_train_stack.append(MSE(y_hat_train, y_train))
         loss_test_stack.append(MSE(y_hat_test, y_test))
         
-        print('Polynomial degre: ', degre[k], ' | MSE train:', np.round(loss_train_stack[-1], 4), ' | MSE test:', np.round(loss_test_stack[-1], 4))
-        plt.plot(x_train, y_hat_train, color=c, label=degre[k],)
+        print('Polynomial degree: ', degree[k], ' | MSE train:', np.round(loss_train_stack[-1], 4), ' | MSE test:', np.round(loss_test_stack[-1], 4))
+        x_draw = np.linspace(-scale, scale, num=200)
+        y_draw = np.polyval(coef, x_draw)
+        plt.plot(x_draw, y_draw, color=c, label=degree[k],)
+        #plt.plot(x_train, y_hat_train, color=c, label=degree[k],)
     
-    leg = plt.gca().legend(loc='center left', bbox_to_anchor=(1, .65), title="Polynomial degre of  \n  the fitted curve \n")
+    leg = plt.gca().legend(loc='center left', bbox_to_anchor=(1, .65), title="Polynomial degree of  \n  the fitted curve \n")
     leg.get_frame().set_alpha(0)    
 
     
-def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degre):
+def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree):
 
     cmap = plt.get_cmap("tab10")   # Because I prefer this color map
 
@@ -71,7 +74,7 @@ def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_deg
     ax1.plot(optimal_train, color=cmap(0), linestyle='dashed', linewidth=linewidth)   # Since we are 'also' interested in the optimal curve
     ax1.plot(optimal_test, color=cmap(0), label='Optimal Capacity', linewidth=linewidth)
 
-    ax2.plot(optimal_degre, color=cmap(2), label='Optimial degree', linewidth=linewidth)   # Optimal degre with respect to the sample size
+    ax2.plot(optimal_degree, color=cmap(2), label='Optimial degree', linewidth=linewidth)   # Optimal degree with respect to the sample size
 
     plt.xticks([0, 1, 2, 3, 4, 5])
 
@@ -85,11 +88,11 @@ def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_deg
     leg2.get_frame().set_alpha(0)   # Legend without frame > legend with frame imo
 
 
-def train_poly_and_see(sample_size, scale, period, variance, degre):
-    H_train = np.zeros((len(sample_size), len(degre)))
-    H_test = np.zeros((len(sample_size), len(degre)))
+def train_poly_and_see(sample_size, scale, period, variance, degree):
+    H_train = np.zeros((len(sample_size), len(degree)))
+    H_test = np.zeros((len(sample_size), len(degree)))
 
-    optimal_train, optimal_test, optimal_degre = [], [], []
+    optimal_train, optimal_test, optimal_degree = [], [], []
 
     i = 0
     for n in sample_size:
@@ -98,7 +101,7 @@ def train_poly_and_see(sample_size, scale, period, variance, degre):
         x_test, y_test = data_simulation(1000, scale, period, variance)
 
         j = 0
-        for k in degre:
+        for k in degree:
             coef = np.polyfit(x_train, y_train, k)
 
             y_hat_train = np.polyval(coef, x_train)
@@ -108,12 +111,12 @@ def train_poly_and_see(sample_size, scale, period, variance, degre):
             H_test[i, j] = MSE(y_test, y_hat_test)
             j += 1
 
-        optimal_degre.append(np.argmin(H_test[i, :]))
-        optimal_train.append(H_train[i, optimal_degre[-1]])
-        optimal_test.append(H_test[i, optimal_degre[-1]])
+        optimal_degree.append(np.argmin(H_test[i, :]))
+        optimal_train.append(H_train[i, optimal_degree[-1]])
+        optimal_test.append(H_test[i, optimal_degree[-1]])
         i +=1
     
-    return H_train, H_test, optimal_train, optimal_test, optimal_degre
+    return H_train, H_test, optimal_train, optimal_test, optimal_degree
     
 def MSE(a, b):
     return ((a-b)**2).mean()
