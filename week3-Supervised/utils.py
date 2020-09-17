@@ -37,7 +37,7 @@ def one_hot(a):
 
 def plot_predictions(i,X, Y, X_test, Y_test, pred_train, pred_test, line_x=None, line_y=None, plot_svm=None, plot_nb = None):
     fig = plt.figure(figsize=(12,5))
-    
+    plt.set_cmap('viridis')
     #TRAIN: indices samples each class
     i_c0 = (Y == 0)
     i_c1 = (Y == 1)
