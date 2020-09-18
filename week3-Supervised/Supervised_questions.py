@@ -10,6 +10,14 @@ import matplotlib.pyplot as plt
 import sklearn as sk
 get_ipython().run_line_magic('matplotlib', 'inline')
 from sklearn.datasets import make_classification
+
+# Code to obtain utils.py
+get_ipython().system('rm -rf 80-629')
+get_ipython().system('git clone https://github.com/lcharlin/80-629/')
+import sys
+sys.path += ['80-629/week3-Supervised/']
+
+
 from utils import generate_data, plot_predictions, plot_svc_decision_function
 
 
