@@ -24,7 +24,7 @@ from utils import generate_data, plot_predictions, plot_svc_decision_function
 # ### In this practical session we will explore several classification  models. But first let's generate a few datasets and plot the training and testing splits. 
 # 
 
-# In[ ]:
+# In[16]:
 
 
 datasets_train, datasets_test = generate_data()
@@ -55,7 +55,7 @@ for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
 
 # As discussed in class, let the decision rule be simply $sign(y(x))$, where $y(x) = W^Tx$ is our discriminant function. Thus, such a classifier will return class '+' for all the points lying on one side of the decision boundary and '-' for the ones lying on the other side. Let's implement this simple classifier. We will encode the two classes as '-1' and '+1'.
 
-# In[ ]:
+# In[13]:
 
 
 #least squares for classification
@@ -65,17 +65,18 @@ def train_LSC(X, Y):
     
     #calculate the discriminant function parameters
     W = np.linalg.inv(X.T @ X) @ (X.T @ Y.reshape(100,1))
+    # @ : matrix multiplication
     return W
 
 def calculate_decision_boundary(W):
     x_1 = np.linspace(-10,10) # <- this would give x1;
     #the goal is to calculate x2 given x1 and the weights
     
-    x_2 = None # QUESTION: complete this line
+    x_2 = (-W[0] - W[1]*x_1) / W[2] 
     return x_1, x_2
 
 
-# In[ ]:
+# In[15]:
 
 
 for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
@@ -118,14 +119,6 @@ for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
 
 
 # **Question 1 (Lin. Classifier):** for which dataset does the model achieve the best performance? Explain in your own words, why this is the case.
-
-# **Question 2 (Lin. Classifier):** complete the **"calculate_decision_boundary"** function above to produce the decision boundary for the classifiers. Rerun the cell above to see the correct decision boundary.
-# 
-# Hint:
-# 1. Set up the discriminant function: $y(\vec{x}) = W^T\vec{x}$.  
-# 2. What is the decision rule? (i.e. which output of the discrimnant function would imply "uncertainty")?
-# 3. Solve for $x_2$
-# 
 
 # #### 1.2. SVM
 
@@ -306,10 +299,10 @@ X_1 = X[i_c1] #data of class 1
 
 
 def calculate_prios(X_0, X_1, X):
-    # TODO: calculate prior class 0 
-    prior_k0 = 0 #QUESTION: edit thios line
-
     # TODO: calculate prior class 1
+    prior_k0 = 0 #QUESTION: edit this line
+
+    # TODO: calculate prior class 0
     prior_k1 = 0 #QUESTION: edit this line
 
     #let's store the priors in a dictionary
