@@ -24,7 +24,7 @@ from utils import generate_data, plot_predictions, plot_svc_decision_function
 # ### In this practical session we will explore several classification  models. But first let's generate a few datasets and plot the training and testing splits. 
 # 
 
-# In[16]:
+# In[ ]:
 
 
 datasets_train, datasets_test = generate_data()
@@ -39,6 +39,13 @@ for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
     X_test = ds_test[0]
     Y_test = ds_test[1]
 
+    i_c0 = (Y == 0)
+    i_c1 = (Y == 1)
+    
+    #TRAIN: true and false predictions 
+    i_c0_t = (Y[i_c0]==0); i_c0_f = (Y[i_c0]==1)
+    i_c1_t = (Y[i_c1]==1); i_c1_f = (Y[i_c1]==0)
+    
     plot_predictions(i+1, X, Y, X_test, Y_test, pred_train=Y, pred_test=Y_test )
 
 
@@ -55,7 +62,7 @@ for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
 
 # As discussed in class, let the decision rule be simply $sign(y(x))$, where $y(x) = W^Tx$ is our discriminant function. Thus, such a classifier will return class '+' for all the points lying on one side of the decision boundary and '-' for the ones lying on the other side. Let's implement this simple classifier. We will encode the two classes as '-1' and '+1'.
 
-# In[13]:
+# In[ ]:
 
 
 #least squares for classification
@@ -76,7 +83,7 @@ def calculate_decision_boundary(W):
     return x_1, x_2
 
 
-# In[15]:
+# In[ ]:
 
 
 for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
@@ -261,7 +268,7 @@ for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
 
 # **Question 1 (NB)**: in the following the fitting procedure for a Naive Bayes classifier is described. Fill in the gaps with missing text (double-click on this cell to be able to edit in the text).
 #     
-#    1. Calculate MLE estemates for all the parameters of our distributions: 
+#    1. Calculate the maximum likelihood estimate (MLE) for all the parameters of our distributions: 
 #      $\theta \in \{$<font size="2" color='red'> $  \text{fill in the parameters here}  $ </font> \} using the training set.
 #    2. Use the estimated parameters and the <font size="2" color='red'> fill in  </font> theorem to make predictions. The corresponding formula is:
 #    
@@ -277,7 +284,7 @@ for i, (ds_train, ds_test) in enumerate(zip(datasets_train, datasets_test)):
 X, Y = datasets_train[1] #we use the 2 circles dataset
 X_test, Y_test = datasets_test[1] #we use the 2 circles dataset
 
-#class indicies
+#class indices
 i_c0 = (Y == 0)
 i_c1 = (Y == 1)
 
@@ -287,9 +294,9 @@ X_1 = X[i_c1] #data of class 1
 
 # #### Training the model
 
-# Let's start by calculating the prior probability for each class. The MLE estimate of a Bernoulli random variable  is simply given by the sample mean:
+# Let's start by calculating the prior probability for each class. The MLE (maximum likelihood estimate) of a Bernoulli random variable  is simply given by the sample mean:
 # \begin{align}
-#     \hat{\pi} = \frac{\sum_{i=0}^n x_i}{n}, 
+#     \hat{\pi} = \frac{\sum_{i=0}^n y_i}{n}, 
 # \end{align}
 # where $n$ is the total number of samples.
 
@@ -411,7 +418,6 @@ print(f'value of feature 1: {test_point[0]}, value of feature 2: {test_point[1]}
 # In[ ]:
 
 
-
 def calculate_probability(x_test, class_summaries, prior_dict):
     # we will store our resulting probabilities in this dictionary:
     resulting_probabilities = dict() 
@@ -452,14 +458,14 @@ print(probs)
 
 
 def train_NB(X,Y):
-    #class indicies
+    #class indices
     i_c0 = (Y == 0)
     i_c1 = (Y == 1)
 
     X_0 = X[i_c0] #data of class 0
     X_1 = X[i_c1] #data of class 1
     
-    prior_dict = calculate_prios(X_0, X_1, X)
+    prior_dict = calculate_prios(X_0, X_1, Y)
     
     #Calculate statistics for features per class
     class_summaries = calculate_MLE(X_0,X_1)
