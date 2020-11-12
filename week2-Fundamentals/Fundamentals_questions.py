@@ -6,7 +6,7 @@
 # 
 # This tutorial will focus on three important aspects of machine learning (ML), namely the capacity of models, the notions of bias and variance of an estimator as well as a brief introduction to cross-validation. The goal is to develop basic intuition of these concepts through a series of short exercises.
 
-# In[1]:
+# In[3]:
 
 
 import pandas as pd
@@ -19,17 +19,17 @@ from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings("ignore")
 
-get_ipython().system('rm -rf 80-629')
-get_ipython().system('git clone https://github.com/lcharlin/80-629/')
-import sys
-sys.path += ['80-629/week2-Fundamentals/']
+#!rm -rf 80-629
+#!git clone https://github.com/lcharlin/80-629/
+#import sys
+#sys.path += ['80-629/week2-Fundamentals/']
 
 # We import several home functions in order to create graphics
-from utilities import scatter_plot, plot_polynomial_curves, plot_optimal_curve, train_poly_and_see, MSE
+from utilities import scatter_plot, plot_polynomial_curves,                       plot_optimal_curve, train_poly_and_see, MSE
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# ## 2.1 Model capacity
+# ## 1.1 Model capacity
 # 
 # Informally, the capacity of a model can be defined as the number of functions a model can fit. Lower-capacity models would be able to perfectly fit (i.e. obtain 0 train error) fewer functions than higher-capacity models. 
 # 
@@ -37,7 +37,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # 
 # Intuitively, when two models fit the training data equally well, usually the model with less capacity will generalize better, i.e. have lower test error. Thus, as rule of thumb we perform similar decision rules over more complex ones. (Extra: this is a good illustration of https://en.wikipedia.org/wiki/Occam%27s_razor)
 
-# ### 2.1.1 Data generation
+# ### 1.1.1 Data generation
 # 
 # Let's first simulate some data! In this section, every observation $y$ is generated according to the following model:
 # 
@@ -76,7 +76,7 @@ x_test, y_test = data_simulation(int(.3*sample_size), scale, period, variance)
 plt = scatter_plot(x_train, x_test, y_train, y_test)   # The scatter_plot function is in the utilities script
 
 
-# ### 2.1.2 Getting - visual - intuition about models' capacity
+# ### 1.1.2 Getting - visual - intuition about models' capacity
 # 
 # As seen in class (Slide 38 for example), the higher is the capacity of the model, the better it will fit the training data set (caution though, fitting the training data well does not necessarily lead to good generalization). Here, we use [polynomial regression](https://en.wikipedia.org/wiki/Polynomial_regression) to fit the training set (don't worry, the purpose of the tutorial is not to understand polynomial regression). Note, however, that the greater is the polynomial degree, the higher is the model capacity. 
 # 
@@ -93,7 +93,7 @@ degree = [0, 1, 3, 5, 10, 20, 50]   # Maximal polynomial degree of the fitted cu
 plot_polynomial_curves(x_train, x_test, y_train, y_test, degree)
 
 
-# ### 2.1.3 Sample size and models' capacity
+# ### 1.1.3 Sample size and models' capacity
 # 
 # We study the behavior of the polynomial regressors and examine how they perform when the sample size increases (as presented on Slide 40 also Figure 5.4 of the Deep Learning book). Specificaly, with study the behavior of the cubic polynomial regression and the optimal polynomial regression (which minimize the MSE on the test set). 
 # 
@@ -111,7 +111,7 @@ H_train, H_test, optimal_train, optimal_test, optimal_degree     = train_poly_an
 plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree)
 
 
-# # 2.2 Bias and variance of estimators
+# # 1.2 Bias and variance of estimators
 # 
 # We will now explore some properties of the bias and the variance of well-known estimators.
 
@@ -125,7 +125,7 @@ plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree)
 # 
 # First, let's simulate some data.
 
-# ### 2.2.1 Data simulation
+# ### 1.2.1 Data simulation
 # 
 # In this section, every observation $y$ is generated according to the following model:
 # 
@@ -162,7 +162,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 scatter_plot(X_train[:, 1], X_test [:, 1], y_train, y_test) 
 
 
-# ### 2.2.2 The OLS estimators
+# ### 1.2.2 The OLS estimators
 # 
 # **Questions**: 
 # 1. Given the expression of the least squares estimators presented on Slide 31 of the course, complete the OLS function below to obtain the least squares estimators. As a reminder, these estimators are defined as follows:
@@ -210,7 +210,7 @@ print('MSE of the train: ', MSE(y_hat_train, y_train))
 print('MSE of the test:  ', MSE(y_hat_test, y_test))
 
 
-# #### 2.2.2.1 Bias of the OLS estimators
+# #### 1.2.2.1 Bias of the OLS estimators
 # 
 # **Question**: Calculate the bias of the estimators.
 
@@ -244,7 +244,7 @@ print("Bias of the w_1: ", bias[1])   # Bias of w_1
 
 # **Answer**: 
 
-# #### 2.2.2.2 Variance of the OLS estimators
+# #### 1.2.2.2 Variance of the OLS estimators
 # 
 # The OLS estimators calculated in the last section have no fixed values and are actually [random variables](https://en.wikipedia.org/wiki/Random_variable). It follows that these estimators have variance. This variance can be estimate in several ways. In this tutorial, we propose to estimated the variance of the OLS estimators in two different ways. The first approach use [Monte Carlo methods](https://en.wikipedia.org/wiki/Monte_Carlo_method#Use_in_mathematics) and the second one simply use [theoretical properties of the variance](https://en.wikipedia.org/wiki/Variance#Properties).
 # 
