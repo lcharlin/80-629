@@ -2,11 +2,12 @@
 import numpy as np
 
 class Grid: # Environment
-  def __init__(self, width, height, start):
+  def __init__(self, width, height, start, noise_prob=0):
     self.width = width
     self.height = height
     self.i = start[0]
     self.j = start[1]
+    self.noise_prob = noise_prob
 
   def set(self, rewards, actions):
     # rewards should be a dict of: (i, j): r (row, col): reward
@@ -25,8 +26,13 @@ class Grid: # Environment
     return s not in self.actions
 
   def move(self, action):
+    
+    # with a probability of noise_prob, do a random action:
+    if np.random.uniform() < self.noise_prob:
+      action = np.random.choice(self.actions[(self.i, self.j)])
+        
     # check if legal move first
-    if action in self.actions[(self.i, self.j)]:
+    if action in self.actions[(self.i, self.j)]:              
       if action == 'U':
         self.i -= 1
       elif action == 'D':
@@ -35,6 +41,7 @@ class Grid: # Environment
         self.j += 1
       elif action == 'L':
         self.j -= 1
+        
     # return a reward (if any)
     return self.rewards.get((self.i, self.j), 0)
 
@@ -64,7 +71,7 @@ class Grid: # Environment
     return set(self.actions.keys()) | set(self.rewards.keys())
 
 
-def standard_grid():
+def standard_grid(noise_prob=0.1):
   # define a grid that describes the reward for arriving at each state
   # and possible actions at each state
   # the grid looks like this
@@ -74,7 +81,7 @@ def standard_grid():
   # .  .  .  1
   # .  x  . -1
   # s  .  .  .
-  g = Grid(3, 4, (2, 0))
+  g = Grid(3, 4, (2, 0), noise_prob=noise_prob)
   rewards = {(0, 3): 1, (1, 3): -1}
   actions = {
     (0, 0): ('D', 'R'),
@@ -126,5 +133,8 @@ def print_policy(P, g):
     print("---------------------------")
     for j in range(g.height):
       a = P.get((i,j), ' ')
-      print("  %s  |" % a, end="")
+      if a == ' ':
+        print(" N/A |", end="")    
+      else:  
+        print("  %s  |" % a, end="")
     print("")
