@@ -37,7 +37,7 @@ Image(url= "https://bjc.edc.org/bjc-r/img/3-lists/TTT1_img/Three%20States%20of%2
 
 # ### 0.2 Recommender Systems
 # 
-# **Question:** In the last class we discussed recommender systems. Imagine that you would like to model the recommendation process overe time as an MDP. How would you do it?
+# **Question:** In the last class we discussed recommender systems. Imagine that you would like to model the recommendation process over time as an MDP. How would you do it?
 
 # States: 
 # 
@@ -61,7 +61,7 @@ Image(url= "https://bjc.edc.org/bjc-r/img/3-lists/TTT1_img/Three%20States%20of%2
 
 
 #imports
-get_ipython().system('wget -nc https://raw.githubusercontent.com/lcharlin/80-629/master/week6-MDPs/gridWorldGame.py')
+get_ipython().system('wget -nc https://raw.githubusercontent.com/lcharlin/80-629/master/week12-MDPs/gridWorldGame.py')
 import numpy as np
 from gridWorldGame import standard_grid, negative_grid, print_values, print_policy
 
