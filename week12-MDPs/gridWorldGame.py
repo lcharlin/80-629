@@ -82,7 +82,7 @@ def standard_grid(noise_prob=0.1):
   # .  x  . -1
   # s  .  .  .
   g = Grid(3, 4, (2, 0), noise_prob=noise_prob)
-  rewards = {(0, 3): 1, (1, 3): -1}
+  rewards = {(0, 3): 1.1, (1, 3): -1}
   actions = {
     (0, 0): ('D', 'R'),
     (0, 1): ('L', 'R'),
