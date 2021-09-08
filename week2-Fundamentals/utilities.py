@@ -47,6 +47,7 @@ def plot_polynomial_curves(x_train, x_test, y_train, y_test, degree, scale):
         x_draw = np.linspace(-scale, scale, num=200)
         y_draw = np.polyval(coef, x_draw)
         plt.plot(x_draw, y_draw, color=c, label=degree[k],)
+        plt.ylim(min(min(y_train), min(y_test)), max(max(y_train), max(y_test)))
         #plt.plot(x_train, y_hat_train, color=c, label=degree[k],)
     
     leg = plt.gca().legend(loc='center left', bbox_to_anchor=(1, .65), title="Polynomial degree of  \n  the fitted curve \n")
@@ -81,7 +82,7 @@ def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_deg
     ax1.set_xlabel('Sample size:  $\ \log_{10}(n) - 1$')
     ax1.set_ylabel('MSE')
     ax1.set_ylim(mini-50, maxi+100)
-    ax2.set_ylabel('Degree of the plynomial', fontsize=12, color = 'green')
+    ax2.set_ylabel('Degree of the polynomial', fontsize=12, color = 'green')
     leg1 = ax1.legend(loc='center left', bbox_to_anchor=(1.1, .8))   # Legend location is somehow important to me
     leg1.get_frame().set_alpha(0)   # Legend without frame > legend with frame imo
     leg2 = ax2.legend(loc='center left', bbox_to_anchor=(1.1, .8))   # Legend location is somehow important to me
@@ -111,9 +112,9 @@ def train_poly_and_see(sample_size, scale, period, variance, degree):
             H_test[i, j] = MSE(y_test, y_hat_test)
             j += 1
 
-        optimal_degree.append(np.argmin(H_test[i, :]))
-        optimal_train.append(H_train[i, optimal_degree[-1]])
-        optimal_test.append(H_test[i, optimal_degree[-1]])
+        optimal_degree.append(degree[np.argmin(H_test[i, :])])
+        optimal_train.append(H_train[i, np.argmin(H_test[i, :])])
+        optimal_test.append(H_test[i, np.argmin(H_test[i, :])]) 
         i +=1
     
     return H_train, H_test, optimal_train, optimal_test, optimal_degree
