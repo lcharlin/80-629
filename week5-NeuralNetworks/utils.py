@@ -44,7 +44,7 @@ def plot_boundaries(w1, w2, w3, w4, w5, w6, b1, b2, b3):
                cmap='bwr_r',
                vmin=0, vmax=1)
 
-def plot_data_transformations(data_x, data_y, w1, w2, w3, w4, w5, w6, b1, b2, b3): 
+def plot_data_transformations(data_x, data_y, w1, w2, w3, w4, w5, w6, b1, b2, b3, language='English'): 
     from scipy.special import expit
     import matplotlib.ticker as ticker
     
@@ -58,7 +58,12 @@ def plot_data_transformations(data_x, data_y, w1, w2, w3, w4, w5, w6, b1, b2, b3
     axs[2].set_aspect('equal')
 
     # get one class
-    axs[0].set_title('Données originales')
+    if language == 'English':
+        axs[0].set_title('Original data')
+    else: 
+        axs[0].set_title('Données originales')
+    axs[0].set_xlabel('x1')
+    axs[0].set_ylabel('x2')
     idx = (data_y>0)
     x1 = data_x[idx,0]
     x2 = data_x[idx,1]
@@ -70,9 +75,14 @@ def plot_data_transformations(data_x, data_y, w1, w2, w3, w4, w5, w6, b1, b2, b3
     x2 = data_x[idx,1]
     axs[0].scatter(x1, x2, c='green')
     
-    axs[1].set_title('Données transformées \n à la sortie de la couche cachée\n (deux unités cachés)')
-    axs[1].set_xlabel("sortie d'un neurone caché")
-    axs[1].set_ylabel("sortie de l'autre neurone caché")
+    if language == 'English':
+        axs[1].set_title('Transformed data\n at the output of the hidden layer\n (two hidden units)')
+        axs[1].set_xlabel("output of one hidden neuron (h1)")
+        axs[1].set_ylabel("output of the other hidden neuron (h2)")
+    else:
+        axs[1].set_title('Données transformées \n à la sortie de la couche cachée\n (deux unités cachés)')
+        axs[1].set_xlabel("sortie d'un neurone caché")
+        axs[1].set_ylabel("sortie de l'autre neurone caché")
     # get one class
     idx = (data_y>0)
     x1 = expit(w1*data_x[idx,0] + w3*data_x[idx,1] + b1)
@@ -85,7 +95,10 @@ def plot_data_transformations(data_x, data_y, w1, w2, w3, w4, w5, w6, b1, b2, b3
     x2 = expit(w2*data_x[idx,0] + w4*data_x[idx,1] + b2)
     axs[1].scatter(x1, x2, c='green')
 
-    axs[2].set_title('Données transformées \n à la sortie du réseau')
+    if language == 'English':
+        axs[2].set_title('Data transformed \n at the network output')
+    else:
+        axs[2].set_title('Données transformées \n à la sortie du réseau')
     # get one class
     idx = (data_y>0)
     nn = nn_p(w1, w2, w3, w4, w5, w6, b1, b2, b3)
