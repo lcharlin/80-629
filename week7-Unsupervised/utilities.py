@@ -39,7 +39,7 @@ def color(label, dim):
     return(np.dot(label, chart))
 
 
-def super_scat_it(X, y, dim, clusters_center=0, task='kmeans', wcolor=False):
+def super_scat_it(X, y, dim, clusters_center=0, task='kmeans', wcolor=True):
     
     sns.set(rc={'figure.figsize':(8,6)})
     sns.set(font_scale = 1.5)
