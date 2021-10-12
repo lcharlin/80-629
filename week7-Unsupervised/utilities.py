@@ -39,11 +39,13 @@ def color(label, dim):
     return(np.dot(label, chart))
 
 
-def super_scat_it(X, y, dim, clusters_center=0, task='kmeans'):
+def super_scat_it(X, y, dim, clusters_center=0, task='kmeans', wcolor=False):
     
     sns.set(rc={'figure.figsize':(8,6)})
     sns.set(font_scale = 1.5)
     cmap = plt.get_cmap("tab10")
+    plt.gca().set_aspect(1)
+
 
     #color=cmap.rainbow(np.linspace(0,1, dim))
 
@@ -54,7 +56,10 @@ def super_scat_it(X, y, dim, clusters_center=0, task='kmeans'):
         ens.columns = ['x1', 'x2', 'y']
         
         for k in range(dim):
-            plt.scatter(ens[ens['y']==k]['x1'],ens[ens['y']==k]['x2'], color=cmap(k), label=f'Distribution {k+1}')
+            if wcolor:
+                plt.scatter(ens[ens['y']==k]['x1'],ens[ens['y']==k]['x2'], color=cmap(k), label=f'Distribution {k+1}')
+            else:
+                plt.scatter(ens[ens['y']==k]['x1'],ens[ens['y']==k]['x2'], color='b', label=f'Distribution {k+1}')
 
         ###
         # Plot presentation
@@ -67,10 +72,12 @@ def super_scat_it(X, y, dim, clusters_center=0, task='kmeans'):
 
     if task == 'EM':
         plt.scatter(X[:,0], X[:,1], color=color(y, dim), s=10)
-          
+
+
     # Axes
     plt.xlabel('x$_1$')
     plt.ylabel('x$_2$')
+    
 
     # Ghosting the legend
     leg = plt.gca().legend(loc='center left', bbox_to_anchor=(1, .85))
