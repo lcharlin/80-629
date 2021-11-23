@@ -55,8 +55,8 @@ def plot_value_function(V, title="Value Function"):
         fig.colorbar(surf)
         plt.show()
 
-    plot_surface(X, Y, Z_noace, "{} (As utilisable)".format(title))
-    plot_surface(X, Y, Z_ace, "{} (pas d'As utilisable)".format(title))
+    plot_surface(X, Y, Z_noace, "{} (pas d'As utilisable)".format(title))
+    plot_surface(X, Y, Z_ace, "{} (As utilisable)".format(title))
 
 
 def plot_policy(V, title="Politique"):
@@ -90,8 +90,8 @@ def plot_policy(V, title="Politique"):
         #fig.colorbar(surf)
         plt.show()
 
-    plot_surface(X, Y, Z_noace, "{} (As utilisable)".format(title))
-    plot_surface(X, Y, Z_ace, "{} (pas d'As utilisable)".format(title))
+    plot_surface(X, Y, Z_noace, "{} (pas d'As utilisable)".format(title))
+    plot_surface(X, Y, Z_ace, "{} (As utilisable)".format(title))
 
 def plot_episode_stats(stats, smoothing_window=10, noshow=False):
     # Plot the episode length over time
