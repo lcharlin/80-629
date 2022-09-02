@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # MATH80629A
-# # Week \#2 - Machine Learning Fundamentals - Exercices
+# # MATH60629A
+# # Week \#2 - Machine Learning Fundamentals - Exercises
 # 
-# This tutorial will focus on three important aspects of machine learning (ML), namely the capacity of models, the notions of bias and variance of an estimator as well as a brief introduction to cross-validation. The goal is to develop basic intuition of these concepts through a series of short exercises.
+# This tutorial will focus on three important aspects of machine learning (ML), namely
+# 1. the capacity of models, 
+# 2. the notions of bias and variance of an estimator, as well as
+# 3. a brief introduction to cross-validation. 
+# 
+# The goal is to develop basic intuition of these concepts through a series of short exercises.
 
 # In[3]:
 
@@ -31,11 +36,11 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ## 1.1 Model capacity
 # 
-# Informally, the capacity of a model can be defined as the number of functions a model can fit. Lower-capacity models would be able to perfectly fit (i.e. obtain 0 train error) fewer functions than higher-capacity models. 
+# Informally, the capacity of a model can be defined as the number of functions a model can fit. Lower-capacity models can perfectly fit (i.e. obtain 0 train error) fewer functions than higher-capacity models. 
 # 
 # Higher-capacity models are generally more prone to **overfitting**. Overfitting occurs when the gap between the test and training error is large, or in other words, when models memorize properties of the training set that are not useful for (i.e. do not generalize to) performing predictions on a test set.
 # 
-# Intuitively, when two models fit the training data equally well, usually the model with less capacity will generalize better, i.e. have lower test error. Thus, as rule of thumb we perform similar decision rules over more complex ones. (Extra: this is a good illustration of https://en.wikipedia.org/wiki/Occam%27s_razor)
+# Intuitively, when two models fit the training data equally well, usually the model with less capacity will generalize better, i.e. have lower test error. Thus, as rule of thumb we prefer simpler decision rules over more complex ones. (Extra: this is a good illustration of https://en.wikipedia.org/wiki/Occam%27s_razor)
 
 # ### 1.1.1 Data generation
 # 
@@ -60,7 +65,7 @@ def data_simulation(sample_size, scale, period, variance):
 
 # Whenever it is possible, it is always a good idea to visualize the data (in order to get some intuition about them). 
 # 
-# **Question**: Play with the parameters (*variance*, *scale* and *period*) and see how they affect the plot.
+# **Question**: Vary the parameters (*variance*, *scale* and *period*) to see how they affect the plot.
 
 # In[3]:
 
@@ -73,12 +78,15 @@ period = 6   # Simulation are based on cosine function (see data_simulation func
 x_train, y_train = data_simulation(int(.7*sample_size), scale, period, variance)
 x_test, y_test = data_simulation(int(.3*sample_size), scale, period, variance)
 
-plt = scatter_plot(x_train, x_test, y_train, y_test)   # The scatter_plot function is in the utilities script
+# The scatter_plot function is in the utilities script
+plt = scatter_plot(x_train, x_test, y_train, y_test)  
 
 
 # ### 1.1.2 Getting - visual - intuition about models' capacity
 # 
-# As seen in class (Slide 38 for example), the higher is the capacity of the model, the better it will fit the training data set (caution though, fitting the training data well does not necessarily lead to good generalization). Here, we use [polynomial regression](https://en.wikipedia.org/wiki/Polynomial_regression) to fit the training set (don't worry, the purpose of the tutorial is not to understand polynomial regression). Note, however, that the greater is the polynomial degree, the higher is the model capacity. 
+# As seen in class (Slide 38 for example), the higher is the capacity of the model, the better it will fit the training data set (again be cautious, fitting the training data well does not necessarily lead to good generalization). 
+# 
+# Here, we use [polynomial regression](https://en.wikipedia.org/wiki/Polynomial_regression) to fit the training set (don't worry, the purpose of the tutorial is not to understand polynomial regression). Note, however, that the greater is the polynomial degree, the higher is the model capacity. 
 # 
 # **Questions**: 
 # 1. Observe how the fitted curve behave with respect to their polynomial degree. 
@@ -88,14 +96,18 @@ plt = scatter_plot(x_train, x_test, y_train, y_test)   # The scatter_plot functi
 # In[6]:
 
 
-degree = [0, 1, 3, 5, 10, 20, 50]   # Maximal polynomial degree of the fitted curve: higher degree == higher capacity
-
-plot_polynomial_curves(x_train, x_test, y_train, y_test, degree)
+# Polynomial degree of the fitted curve: higher degree == higher capacity
+degree = [0, 1, 3, 5, 10, 20, 50]   
+plot_polynomial_curves(x_train, x_test, y_train, y_test, degree, scale)
 
 
 # ### 1.1.3 Sample size and models' capacity
 # 
-# We study the behavior of the polynomial regressors and examine how they perform when the sample size increases (as presented on Slide 40 also Figure 5.4 of the Deep Learning book). Specificaly, with study the behavior of the cubic polynomial regression and the optimal polynomial regression (which minimize the MSE on the test set). 
+# In the previous section, we discussed model capacity.
+# 
+# Now we study the behavior of the polynomial regressors and examine how they perform when the sample size increases (as presented on Slide 40 also Figure 5.4 of the Deep Learning book).
+# 
+# Specificaly, we study the behavior of the cubic polynomial regression and the optimal polynomial regression (which minimize the MSE on the test set). 
 # 
 # **Question**: Do the following curves behave as expected?
 
@@ -117,7 +129,9 @@ plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree)
 
 # ##  Linear models for regression
 # 
-# The polynomial curve fitting problem encountered previously is an instance of a broader class of models - linear models. More specifically, it is a linear regression task, where the goal is to predict a value of one or more continuous target variables given the values of some input variables. Linear models share the property of **being a linear function of the adjustable parameters** (polynomial coefficients in case of polynomial models). This simple form of linear regression models are also linear functions of the input variables. Linear models have been studied in depth by statisticians in the last century and their theory is well understood. 
+# The polynomial curve fitting problem encountered previously is an instance of a broader class of models called linear models. More specifically, it is a linear regression task, where the goal is to predict a value of one or more continuous target variables given the values of some input variables. 
+# 
+# Linear models share the property of **being a linear function of the adjustable parameters** (polynomial coefficients in case of polynomial models). This simple form of linear regression models are also linear functions of the input variables. Linear models have been studied in depth by statisticians in the last century and their theory is well understood. 
 # 
 # In addition we hypothesize that our loss function is the squared error (i.e. ( $\sum_{i=0}^n (y_i-\hat{y}_i)^2$ ). We will study some properties of this model and loss function. 
 # 
@@ -173,7 +187,7 @@ scatter_plot(X_train[:, 1], X_test [:, 1], y_train, y_test)
 # 
 # 2. Derive the estimators associated with the previously simulated data.
 # 
-# *Remark*: Do not forget to calculate the intercept $\bf{w}_0$. This being said and according to the above OLS function, simply fill the first column of the design matrix with ones as explicitly suggest [here](https://en.wikipedia.org/wiki/Design_matrix#:~:text=In%20statistics%2C%20a%20design%20matrix,specific%20values%20for%20that%20object.).
+# *Remark*: Do not forget to calculate the intercept $\bf{w}_0$. This being said and according to the above OLS function, simply fill the first column of the design matrix with ones as suggested [here](https://en.wikipedia.org/wiki/Design_matrix#:~:text=In%20statistics%2C%20a%20design%20matrix,specific%20values%20for%20that%20object.).
 
 # **Answer**:
 
@@ -219,7 +233,7 @@ print('MSE of the test:  ', MSE(y_hat_test, y_test))
 # In[ ]:
 
 
-bias = (...)
+bias = (...) # bias[0] should be the bias of w_0, and bias[1] should be the bias of w_1
 
 print("Bias of w_0: ", bias[0])   # Bias of w_0
 print("Bias of the w_1: ", bias[1])   # Bias of w_1
@@ -244,9 +258,9 @@ print("Bias of the w_1: ", bias[1])   # Bias of w_1
 
 # **Answer**: 
 
-# #### 1.2.2.2 Variance of the OLS estimators
+# #### 1.2.2.2 Variance of the OLS estimators (skip if you are short on time) 
 # 
-# The OLS estimators calculated in the last section have no fixed values and are actually [random variables](https://en.wikipedia.org/wiki/Random_variable). It follows that these estimators have variance. This variance can be estimate in several ways. In this tutorial, we propose to estimated the variance of the OLS estimators in two different ways. The first approach use [Monte Carlo methods](https://en.wikipedia.org/wiki/Monte_Carlo_method#Use_in_mathematics) and the second one simply use [theoretical properties of the variance](https://en.wikipedia.org/wiki/Variance#Properties).
+# The OLS estimators calculated in the last section have no fixed values and are actually [random variables](https://en.wikipedia.org/wiki/Random_variable). It follows that these estimators have variance. This variance can be estimated in several ways. In this tutorial, we propose to estimate the variance of the OLS estimators in two different ways. The first approach use [Monte Carlo methods](https://en.wikipedia.org/wiki/Monte_Carlo_method#Use_in_mathematics) and the second one simply use [theoretical properties of the variance](https://en.wikipedia.org/wiki/Variance#Properties).
 # 
 # 
 # #### Monte Carlo methods
@@ -257,8 +271,12 @@ print("Bias of the w_1: ", bias[1])   # Bias of w_1
 
 # **Answer**:
 
-# In[10]:
+# In[2]:
 
+
+# The intuition behind this procedure is that we will reestimate the parameters (estimators) 
+# using multiple different data sets. Each dataset is sampled from the same distribution. 
+# We can then obtain the estimator variance empirically from these multiple estimators.
 
 mc_estimates = 10000   # Fix the number of Monte Carlo estimates that you want to run
 M = np.zeros((mc_estimates, 2))   # Initialize a matrix where you will store the estimators
@@ -285,7 +303,7 @@ print("MC estimate of the variance of the w_1 estimate: ", (...))   # Variance o
 
 # #### Analytical approach
 # 
-# If we cannot compute the MC estimators, we can sometimes derive the analytical expression of the variance of the estimators. Indeed, the variance of the OLS is:
+# In cases where we cannot compute the MC estimators, we can sometimes derive the analytical expression of the variance of the estimators. Indeed, the variance of the OLS is:
 # 
 # \begin{align}
 #     \text{Var}(\hat{\bf{w}}^{\text{OLS}}) 
@@ -319,9 +337,9 @@ print("Analytical variance of the w_1 estimate: ", (...))
 
 # **Answer**: Yes! The analytical estimates of the variance of the OLS estimators are approximately the same as those obtained by MC methods.
 
-# ### 2.2.3 OLS estimators with L2-Regularization
+# ### 1.2.3 OLS estimators with L2-Regularization
 # 
-# As pointed out in Slide 45, we can add an L$_2$ regularization on the weights of the linear model defined in Section 2.1. The associated estimators are known as the [Ridge or Tikhonov estimator](https://en.wikipedia.org/wiki/Tikhonov_regularization) and are defined as
+# As pointed out in Slide 45, we can add an L$_2$ regularization on the weights of the linear model defined in Section 1.1. The associated estimators are known as the [Ridge or Tikhonov estimator](https://en.wikipedia.org/wiki/Tikhonov_regularization) and are defined as
 # 
 # $$ \hat{w}^{\text{ridge}} := (\bf{X}^\top \bf{X} + \lambda \bf{I})^{-1} \bf{X}^\top \bf{y}$$
 # 
@@ -350,7 +368,7 @@ def ridge(X, y, lambda_hp):
 # **Question**: Compute the ridge estimators for different values of $\lambda$. But first, try to understand how the ridge estimator will behave according to these 3 scenarios:
 # 
 # 1. For $\lambda = 0$. 
-# 2. For $\lambda = 10^10$.
+# 2. For $\lambda = 10^{10}$.
 # 3. How the estimators generally behave according to $\lambda$? 
 
 # **Answers**:
@@ -377,7 +395,7 @@ y_hat_train = (...)
 y_hat_test = (...)
 
 
-# #### 2.2.3.1 Bias of the ridge estimators
+# #### 1.2.3.1 Bias of the ridge estimators
 # 
 # **Question**: Calculate the bias of the estimators.
 
@@ -416,14 +434,18 @@ print("Bias of the w_1: ", bias[1])   # Bias of w_1
 
 # **Remark**: One question remains: how can choose the hyper parameter value $\lambda$ of the ridge estimator? The following section will suggest an answer.
 
-# ## 2.3 Cross validation - Getting the optimal value of hyperparameters
+# ## 1.3 Cross validation - Getting the optimal value of hyperparameters
 # 
-# Cross validation can be used (among other techniques) in order to perform model selection and hyperparameter selection. The first step is to split the train set into a (smaller) train set and validation set as shown on Slide 49 of the course. In Python, we will mostly use the train_test_split function from the [Scikit-learn library](https://scikit-learn.org/) to perform data splitting.
+# Cross validation can be used (among other techniques) in order to perform model selection and hyperparameter selection. 
+# 
+# The first step is to split the train set into a (smaller) train set and validation set as shown on Slide 49 of the course. 
+# 
+# In Python, we will mostly use the train_test_split function from the [Scikit-learn library](https://scikit-learn.org/) to perform data splitting.
 
 # In[ ]:
 
 
-X_sub_train, X_validation, y_sub_train, y_validation = train_test_split(X_train, y_train, test_size=0.2, random_state=0)
+X_sub_train, X_validation, y_sub_train, y_validation =     train_test_split(X_train, y_train, test_size=0.2, random_state=0)
 
 
 # We now study the performance (according to the MSE) of the ridge estimators given a grid of hyperparameter values. 
@@ -460,7 +482,7 @@ for lambda_hp in np.arange(0, 100, 1):
     losses_stack_test.append(MSE(y_test, y_hat_test))
 
 
-# We can now select to optimal hyperparameter $\lambda$. The optimal value will minimize the loss function on the validation set. Note that the selection of the optimal hyper parameter will never be based on the its behavior on the test set!
+# We can select to optimal hyperparameter $\lambda$. The optimal value will minimize the loss function on the validation set. Note that the selection of the optimal hyper parameter will never be based on the its behavior on the test set!
 
 # In[ ]:
 
@@ -492,9 +514,9 @@ print('\nTEST: OLS estimators:   ', losses_stack_test[0])
 print('TEST: ridge estimators: ', losses_stack_test[np.argmin(losses_stack_validation)])
 
 
-# ## 2.4 Take home messages - Final remarks
+# ## 1.4 Take home messages - Final remarks
 # 
 # 1. Model with high capacity don't necessarily have a lower generalization error.
-# 2. An unbiased estimator doesn't necessarily have a lower generalization error.
+# 2. An unbiased estimator (OLS vs Ridge) doesn't necessarily have a lower generalization error.
 # 3. In the specific case where the loss function is based on the MSE, we can decompose the generalization error with respect to the bias and the variance of the associated estimators.
-# 4. Cross validation procedure can be tricky! Be sure to understand the code snippet in Section 2.3!
+# 4. Cross validation procedure can be tricky! Be sure to understand the code snippet in Section 1.3!
