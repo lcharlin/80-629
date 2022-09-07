@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # MATH80629
-# # Week \#2 - Fondamentaux de l'apprentissage automatique - Exos
+# # MATH60629
+# # Semaine \#2 - Fondamentaux de l'apprentissage automatique - Exos
 # 
-# Ces exercices portent sur trois aspects importants de l'apprentissage automatique (ML) : 1) la capacité des modèles, 2) le biais et la variance d'un estimateur (modèle) ainsi que 3) une courte introduction à la validation croisée. 
+# Ces exercices portent sur trois aspects importants de l'apprentissage automatique (ML) : 
+# 1. la capacité des modèles
+# 2. le biais et la variance d'un estimateur (modèle), ainsi que
+# 3. une courte introduction à la validation croisée. 
 # 
 # Le but de ce notebook est de développer votre intuition à travers une série d'exercices.
 
@@ -27,12 +30,12 @@ warnings.filterwarnings("ignore")
 #import sys
 #sys.path += ['80-629/week2-Fundamentals/']
 
-# Nous utiliserons plusieurs fonctions du fichier utilities.py pour créeer des figures
+# Nous utiliserons plusieurs fonctions du fichier utilities.py pour créer des figures
 from utilities import scatter_plot, plot_polynomial_curves,                       plot_optimal_curve, train_poly_and_see, MSE
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# ## 2.1 Capacité d'un modèle
+# ## 1.1 Capacité d'un modèle
 # 
 # Intuitivement, la capacité d'un modèle peut être définie comme le nombre de fonctions que ce modèle peut représenter (c.-à-d. obtenir une erreur d'entraînement de 0). Par rapport à un modèle de haute capacité, un modèle de basse capacité peut représenter moins de fonctions.
 # 
@@ -40,7 +43,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # 
 # Intuitivement, si deux modèles obtiennent des résultats similaires en entraînement, celui avec la plus petite capacité généralisera le mieux. Nous préférons donc une explication simple versus une explication plus compliquée (c'est une bonne illustration du [Rasoir d'Ockham](https://fr.wikipedia.org/wiki/Rasoir_d%27Ockham).
 
-# ### 2.1.1 Génération de données
+# ### 1.1.1 Génération de données
 # 
 # Commençons par simuler des données! Dans cette section, chaque observation $y$ est générée par le modèle suivant: 
 # 
@@ -81,7 +84,7 @@ x_test, y_test = data_simulation_(int(.3*sample_size), scale, period, variance)
 plt = scatter_plot(x_train, x_test, y_train, y_test)   
 
 
-# ### 2.1.2 Obtenir une première intuition visuelle de la capacité du modèle
+# ### 1.1.2 Obtenir une première intuition visuelle de la capacité du modèle
 # 
 # Comme vu dans le cours (par exemple diapo 38), plus haute est la capacité du modèle, meilleur le modèle sera sur l'ensemble d'entraînement (attention, encore une fois, ça ne dit rien sur sa capacité à généraliser). Pour l'instant, nous entraînerons un modèle de [régression polynomiale](https://fr.wikipedia.org/wiki/R%C3%A9gression_polynomiale). 
 # L'avantage de ce modèle est que nous pouvons facilement changer sa capacité en augmentant le degré du polynôme $m$:
@@ -104,7 +107,7 @@ degree = [0, 1, 3, 5, 10, 20, 40]
 plot_polynomial_curves(x_train, x_test, y_train, y_test, degree, scale)
 
 
-# ### 2.1.3 Taille échantillonnale et capacité du modèle
+# ### 1.1.3 Taille échantillonnale et capacité du modèle
 # 
 # Dans la section précédente, nous avons discuté de la capacité du modèle. 
 # 
@@ -129,7 +132,7 @@ H_train, H_test, optimal_train, optimal_test, optimal_degree     = train_poly_an
 plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree)
 
 
-# # 2.2 Biais et variance des estimateurs
+# # 1.2 Biais et variance des estimateurs
 # 
 # Nous explorons maintenant quelques propriétés du biais et de la variance de quelques estimateurs bien connus. 
 
@@ -150,13 +153,13 @@ plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_degree)
 # 
 # Pour commencer, simulons des données. 
 
-# ### 2.2.1 Simulation de données 
+# ### 1.2.1 Simulation de données 
 # 
 # Chaque observation $y$ est générée par le modèle suivant :
 # 
 # $$ y = \bf{x}^\top \bf{w} + \epsilon$$
 # 
-# où $y \in \mathbb{R}$ est la sortie, $\bf{x}$ le vecteur de variables indépendantes,  $\bf{w}$ le vecteur des paramètres et $\epsilon$ est le bruit gaussien $\epsilon \sim \mathcal{N}(0,1)$.
+# où $y \in \mathbb{R}$ est la sortie, $\bf{x}$ le vecteur de variables indépendantes,  $\bf{w}$ le vecteur des paramètres et $\epsilon$ est le bruit gaussien $\epsilon \sim \mathcal{N}(0,11)$.
 
 # In[23]:
 
@@ -165,7 +168,7 @@ def data_simulation(sample_size, w_0, w_1):
     
     x = np.random.uniform(-1, 10, sample_size)
     x.sort()
-    noise = np.random.normal(0, 5, sample_size)
+    noise = np.random.normal(0, 11, sample_size)
     y = w_0 + w_1 * x + noise
     
     return x, y
@@ -189,7 +192,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y,
 scatter_plot(X_train[:, 1], X_test [:, 1], y_train, y_test) 
 
 
-# ### 2.2.2 Estimateurs OLS
+# ### 1.2.2 Estimateurs OLS
 # 
 # **Questions**: 
 # 1. Étant donné l'expression des moindres carrés donnée à la diapo 31 du cours, complétez le fonction OLS ci-dessous pour obtenir les estimateurs moindres carrés. Pour rappel, ces estimateurs sont définis comme suit (il vous suffit donc d'implémenter cette formule dans la fonction OLS):
@@ -214,7 +217,11 @@ def OLS(X, y):
     
     return:  array of weights
     """
-        
+    
+    A = np.linalg.inv(np.dot(X.T, X))
+    B = np.dot(X.T, y)
+
+    # À COMPLÉTER :    
     return (...)
 
 w_ols = OLS(X_train, y_train)
@@ -237,7 +244,7 @@ print('MSE en entraînement: ', MSE(y_hat_train, y_train))
 print('MSE en test:  ', MSE(y_hat_test, y_test))
 
 
-# #### 2.2.2.1 Biais de l'estimateur des moindres carrés
+# #### 1.2.2.1 Biais de l'estimateur des moindres carrés
 # 
 # **Question**: Calculez le biais (empirique) des estimateurs.
 
@@ -262,7 +269,7 @@ print("Biais de w_1: ", bias[1])   # Bias of w_1
 sample_size = 10**6
 
 
-# #### 2.2.2.2 Variance des estimateurs OLS (à sauter si manque de temps)
+# #### 1.2.2.2 Variance des estimateurs OLS (à sauter si manque de temps)
 # 
 # Les estimateurs OLS calculés à la section précédente sont en fait des variables aléatoires. Ces estimateurs ont donc une variance. 
 # 
@@ -337,9 +344,9 @@ print("Variance analytique de l'estimé de w_1: ",var[1, 1])
 
 # **Question**: Les résultats analytiques précédents sont-ils raisonnables? 
 
-# ### 2.2.3 Estimateurs des moindres carrés (OLS) avec régularisation L2
+# ### 1.2.3 Estimateurs des moindres carrés (OLS) avec régularisation L2
 # 
-# Comme montré à la diapo 45, on peut ajouter une régularisation L$_2$ sur les paramètres d'un modèle linéaire (voir Section 2.1). 
+# Comme montré à la diapo 45, on peut ajouter une régularisation L$_2$ sur les paramètres d'un modèle linéaire (voir la section 1.1). 
 # 
 # Le problème est connu sous le nom de (régression d'arête, ridge ou de Tikhonov)
 # [https://en.wikipedia.org/wiki/Tikhonov_regularization] :
@@ -393,7 +400,7 @@ print('MSE en entraînement: ', MSE(y_hat_train, y_train))
 print('MSE en test:  ', MSE(y_hat_test, y_test))
 
 
-# #### 2.2.3.1 Biais des estimateurs d'arête
+# #### 1.2.3.1 Biais des estimateurs d'arête
 # 
 # **Question**: Calculez le biais des estimateurs d'arête.
 
@@ -433,7 +440,7 @@ print("Biais de w_1: ", bias[1])   # Bias de w_1
 
 # **Remarque**: Comment choisir la valeur de l'hyperparamètre $\lambda$? Nous en discutons à la section suivante.
 
-# ## 2.3 Validation croisée - Pour trouver de bons hyperparamètres
+# ## 1.3 Validation croisée - Pour trouver de bons hyperparamètres
 # 
 # La validation croisée est utile pour faire une sélection de modèles ainsi que pour trouver des bons hyperparamètres.
 # 
@@ -514,9 +521,9 @@ print('\nTEST: estimateurs OLS:   ', losses_stack_test[0])
 print('TEST: estimateurs Ridge: ', losses_stack_test[np.argmin(losses_stack_validation)])
 
 
-# ## 2.4 Remarques finales
+# ## 1.4 Remarques finales
 # 
 # 1. Un modèle de plus haute capacité pourra mieux modéliser l'ensemble d'entraînement, mais attention à l'erreur de généralisation. 
-# 2. Un estimateur non biaisé n'offre pas nécessairement une meilleure erreur de généralisation.
+# 2. Un estimateur non biaisé (OLS par rapport à Ridge) n'offre pas nécessairement une meilleure erreur de généralisation.
 # 3. Quand l'erreur est la MSE, on peut décomposer l'erreur de généralisation par rapport au biais et à la variance des estimateurs.
-# 4. La validation croisée est très utile, on vous conseille de bien comprendre la Section 2.3!
+# 4. La validation croisée est très utile, on vous conseille de bien comprendre la Section 1.3!
