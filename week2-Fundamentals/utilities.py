@@ -61,9 +61,8 @@ def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_deg
     H = np.concatenate((optimal_train, optimal_test, H_train[:,2], H_test[:,2]), axis=0)
     mini, maxi = min(H), max(H)
     linewidth = 2
-    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(15,5))
+    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)#, layout='constrained')#, figsize=(30,5))
     #ax2 = ax1.twinx()
-    #ax1, ax2 = ax[0]
     #ax2 = ax[1]
     
     # Home made tricks for great legend
@@ -71,24 +70,28 @@ def plot_optimal_curve(optimal_train, optimal_test, H_train, H_test, optimal_deg
     ax1.plot([-20] * len(optimal_train), label='Training', linestyle='dashed', color='k', linewidth=1)
     ax1.plot([-20] * len(optimal_train), label='     ', linestyle='dashed', color='white')
 
-    ax2.plot(H_train[:,2], color=cmap(1), linestyle='dashed', linewidth=linewidth)   # Since we are interested in the cubic curve
-    ax2.plot(H_test[:,2], color=cmap(1), label='Cubic',linewidth=linewidth)
-    
-    ax2.plot(optimal_train, color=cmap(0), linestyle='dashed', linewidth=linewidth)   # Since we are 'also' interested in the optimal curve
-    ax2.plot(optimal_test, color=cmap(0), label='Optimal Capacity', linewidth=linewidth)
-
-    ax2.plot(optimal_degree, color=cmap(2), label='Optimial degree', linewidth=linewidth)   # Optimal degree with respect to the sample size
-
-    plt.xticks([0, 1, 2, 3, 4, 5])
-
+    ax1.plot(H_train[:,2], color=cmap(1), linestyle='dashed', linewidth=linewidth)   # Since we are interested in the cubic curve
+    ax1.plot(H_test[:,2], color=cmap(1), label='Cubic',linewidth=linewidth)
     ax1.set_xlabel('Sample size:  $\ \log_{10}(n) - 1$')
     ax1.set_ylabel('MSE')
     ax1.set_ylim(mini-50, maxi+100)
-    ax2.set_ylabel('Degree of the polynomial', fontsize=12, color = 'green')
+    ax1.plot(optimal_train, color=cmap(0), linestyle='dashed', linewidth=linewidth)   # Since we are 'also' interested in the optimal curve
+    ax1.plot(optimal_test, color=cmap(0), label='Optimal Capacity', linewidth=linewidth)
+
+
+    plt.xticks([0, 1, 2, 3, 4, 5])
     leg1 = ax1.legend(loc='center left', bbox_to_anchor=(1.1, .8))   # Legend location is somehow important to me
     leg1.get_frame().set_alpha(0)   # Legend without frame > legend with frame imo
+
+    #plt.show()
+
+    ax2.plot(optimal_degree, color=cmap(2), label='Optimial degree', linewidth=linewidth)   # Optimal degree with respect to the sample size
+    ax2.set_ylabel('Degree of the polynomial', fontsize=12, color = 'green')
+    ax2.set_xlabel('Sample size:  $\ \log_{10}(n) - 1$')
     leg2 = ax2.legend(loc='center left', bbox_to_anchor=(1.1, .8))   # Legend location is somehow important to me
     leg2.get_frame().set_alpha(0)   # Legend without frame > legend with frame imo
+
+    plt.show()
 
 
 
